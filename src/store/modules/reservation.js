@@ -26,7 +26,7 @@ export default {
       bodyFormData.set("password", params.password);
       await axios({
         method: "post",
-        url: "http://test.aircheckin.ru/api/v1/login",
+        url: "https://test.aircheckin.ru/api/v1/login",
         data: bodyFormData,
       })
         .then((resp) => {

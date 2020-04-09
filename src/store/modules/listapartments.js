@@ -19,11 +19,9 @@ export default {
         guests: rootState.picker.guests,
       };
       const passToken = window.localStorage.getItem("token");
-      console.log(params);
-      console.log(passToken);
 
       const apiClinet = axios.create({
-        baseURL: `http://test.aircheckin.ru`,
+        baseURL: `https://test.aircheckin.ru`,
         header: {
           Accept: "application/json",
           // Authorization: Bearer + passToken,
