@@ -29,38 +29,40 @@
         </div>
       </div>
     </v-date-picker>
-    <div class="add-guest">
-      <div class="add-guest__descript">
-        <b-icon icon="account-multiple" size="is-small" class="add-guest__descript--image" />
-        <span class="add-guest__descript--text">Гости</span>
-      </div>
+    <div class="picker--right">
+      <div class="add-guest">
+        <div class="add-guest__descript">
+          <b-icon icon="account-multiple" size="is-small" class="add-guest__descript--image" />
+          <span class="add-guest__descript--text">Гости</span>
+        </div>
 
-      <div class="add-guest__buttons">
-        <button
-          type="button"
-          :class="
+        <div class="add-guest__buttons">
+          <button
+            type="button"
+            :class="
             getGuests === 0
               ? 'add-guest__button--disabled'
               : 'add-guest__button'
           "
-          @click="this.decrement"
-          :disabled="getGuests === 0 ? true : false"
-        >-</button>
-        <span class="add-guest__guest">{{ getGuests }}</span>
-        <button
-          type="button"
-          :class="
+            @click="this.decrement"
+            :disabled="getGuests === 0 ? true : false"
+          >-</button>
+          <span class="add-guest__guest">{{ getGuests }}</span>
+          <button
+            type="button"
+            :class="
             getGuests === 17
               ? 'add-guest__button--disabled'
               : 'add-guest__button'
           "
-          @click="this.increment"
-          :disabled="getGuests === 17 ? true : false"
-        >+</button>
+            @click="this.increment"
+            :disabled="getGuests === 17 ? true : false"
+          >+</button>
+        </div>
       </div>
-    </div>
 
-    <button type="button" class="reservation-button" @click="check()">Найти апартаменты</button>
+      <button type="button" class="reservation-button" @click="check()">Найти апартаменты</button>
+    </div>
   </div>
 </template>
 
@@ -196,10 +198,12 @@ export default {
 <style lang="scss" scoped>
 .picker {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 8px 8px 12px;
   flex-wrap: wrap;
+}
+.picker--right {
+  display: flex;
 }
 .date__in {
   max-width: 270px;
@@ -221,6 +225,8 @@ export default {
   width: 254px;
   height: 54px;
   margin-top: 16px;
+  margin-right: 40px;
+  margin-left: 40px;
 }
 
 .add-guest__descript--image {
@@ -256,6 +262,7 @@ export default {
 .add-guest__descript--text {
   margin-right: 9px;
 }
+
 //button find available
 .reservation-button {
   margin-top: 16px;
