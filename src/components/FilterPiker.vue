@@ -1,46 +1,37 @@
 <template>
   <div class="picker">
-    <b-field class="date__in">
-      <b-datepicker
-        :date-formatter="
-          (date) =>
-            this.$moment(date)
-              .locale(this.lang)
-              .format('DD-MM-YYYY')
-        "
-        :month-names="this.localMonth"
-        :min-date="this.getMinDate"
-        :day-names="this.localDay"
-        placeholder="Заезд"
-        icon="calendar-arrow-left"
-        v-model="dateIn"
-      />
-    </b-field>
-    <b-field class="date__out">
-      <b-datepicker
-        :date-formatter="
-          (date) =>
-            this.$moment(date)
-              .locale(this.lang)
-              .format('DD-MM-YYYY')
-        "
-        :month-names="this.localMonth"
-        :min-date="this.getDateIn"
-        :day-names="this.localDay"
-        placeholder="Выезд"
-        icon="calendar-arrow-right"
-        v-model="dateOut"
-        ref="out"
-      />
-    </b-field>
+    <v-date-picker
+      :columns="layout.columns"
+      :rows="layout.rows"
+      :is-expanded="layout.isExpanded"
+      mode="range"
+      v-model="range"
+      locale="ru"
+      :masks="{ title: 'MMM YYYY' }"
+      select-attribute="selectAttribute"
+      tint-color="#000"
+      show-caps
+      :popover="{ placement: 'bottom', visibility: 'click' }"
+    >
+      <div class="datepicker--wrapper">
+        <div class="datepicker__date-in">
+          <div class="icon-wrapper">
+            <img src="@/assets/Shapeapart.svg" alt="Icon datepicker" class="datepicker__icon" />
+            <div class="datepicker__input">Заезд</div>
+          </div>
 
+          <span class="mdi mdi-chevron-down"></span>
+        </div>
+
+        <div class="datepicker__date-out">
+          <div class="datepicker__input">Выезд</div>
+          <span class="mdi mdi-chevron-down"></span>
+        </div>
+      </div>
+    </v-date-picker>
     <div class="add-guest">
       <div class="add-guest__descript">
-        <b-icon
-          icon="account-multiple"
-          size="is-small"
-          class="add-guest__descript--image"
-        />
+        <b-icon icon="account-multiple" size="is-small" class="add-guest__descript--image" />
         <span class="add-guest__descript--text">Гости</span>
       </div>
 
@@ -54,9 +45,7 @@
           "
           @click="this.decrement"
           :disabled="getGuests === 0 ? true : false"
-        >
-          -
-        </button>
+        >-</button>
         <span class="add-guest__guest">{{ getGuests }}</span>
         <button
           type="button"
@@ -67,19 +56,48 @@
           "
           @click="this.increment"
           :disabled="getGuests === 17 ? true : false"
-        >
-          +
-        </button>
+        >+</button>
       </div>
     </div>
 
-    <b-button type="is-dark" class="reservation-button" @click="check()"
-      >Найти апартаменты</b-button
-    >
+    <button type="button" class="reservation-button" @click="check()">Найти апартаменты</button>
   </div>
 </template>
 
 <script>
+// <b-field class="date__in">
+//   <b-datepicker
+//     :date-formatter="
+//       (date) =>
+//         this.$moment(date)
+//           .locale(this.lang)
+//           .format('DD-MM-YYYY')
+//     "
+//     :month-names="this.localMonth"
+//     :min-date="this.getMinDate"
+//     :day-names="this.localDay"
+//     placeholder="Заезд"
+//     icon="calendar-arrow-left"
+//     v-model="dateIn"
+//   />
+// </b-field>
+// <b-field class="date__out">
+//   <b-datepicker
+//     :date-formatter="
+//       (date) =>
+//         this.$moment(date)
+//           .locale(this.lang)
+//           .format('DD-MM-YYYY')
+//     "
+//     :month-names="this.localMonth"
+//     :min-date="this.getDateIn"
+//     :day-names="this.localDay"
+//     placeholder="Выезд"
+//     icon="calendar-arrow-right"
+//     v-model="dateOut"
+//     ref="out"
+//   />
+// </b-field>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -99,23 +117,39 @@ export default {
         "Сентябрь",
         "Октябрь",
         "Ноябрь",
-        "Декабрь",
+        "Декабрь"
       ],
       localDay: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
       checkIn: "Заезд",
       checkOut: "Выезд",
-      minDate: new Date(),
+      minDate: new Date()
     };
   },
   computed: {
     ...mapGetters(["getGuests", "getDateIn", "getDateOut", "getMinDate"]),
+    layout() {
+      return this.$screens({
+        // Default layout for mobile
+        default: {
+          columns: 1,
+          rows: 1,
+          isExpanded: true
+        },
+        // Override for large screens
+        lg: {
+          columns: this.$screens({ default: 1, laptop: 2 }),
+          rows: 1,
+          isExpanded: false
+        }
+      });
+    },
     dateIn: {
       get() {
         return this.getDateIn;
       },
       set(value) {
         this.$store.commit("insertDateIn", value);
-      },
+      }
     },
     dateOut: {
       get() {
@@ -123,7 +157,7 @@ export default {
       },
       set(value) {
         this.$store.commit("insertDateOut", value);
-      },
+      }
     },
     guests: {
       get() {
@@ -131,8 +165,8 @@ export default {
       },
       set(value) {
         this.$store.commit("insertGuests", value);
-      },
-    },
+      }
+    }
   },
   watch: {
     getDateIn(newValue, oldValue) {
@@ -141,7 +175,7 @@ export default {
         .add(1, "days")
         .toDate();
       this.$store.commit("insertDateOut", dateOutModel);
-    },
+    }
   },
   methods: {
     ...mapMutations([
@@ -149,17 +183,17 @@ export default {
       "insertDateOut",
       "insertGuests",
       "increment",
-      "decrement",
+      "decrement"
     ]),
     ...mapActions(["getAvailible"]),
     async check() {
       console.log("yes");
       await this.getAvailible();
-    },
-  },
+    }
+  }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .picker {
   display: flex;
   justify-content: space-between;
@@ -179,21 +213,14 @@ export default {
 }
 .add-guest {
   background-color: white;
-  border-color: #dbdbdb;
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
+  border: 2px solid #747474;
   color: #363636;
   padding: 5px 9px;
   display: flex;
   justify-content: space-between;
-  max-width: 250px;
-  height: 36px;
+  width: 254px;
+  height: 54px;
   margin-top: 16px;
-
-  &:hover {
-    border-color: #b5b5b5;
-  }
 }
 
 .add-guest__descript--image {
@@ -205,6 +232,7 @@ export default {
   background: transparent;
   outline: none;
   cursor: pointer;
+  font-size: 18px;
 }
 .add-guest__button--disabled {
   border: none;
@@ -223,11 +251,77 @@ export default {
 }
 .add-guest__guest {
   padding: 0 9px;
+  align-self: center;
 }
 .add-guest__descript--text {
   margin-right: 9px;
 }
+//button find available
 .reservation-button {
+  margin-top: 16px;
+  width: 253px;
+  height: 54px;
+  border: none;
+  background: #000000;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+//date picker
+.icon-wrapper {
+  display: flex;
+  align-self: center;
+  align-items: center;
+}
+.datepicker__date-in {
+  width: 50%;
+  padding: 15px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.datepicker__date-out {
+  border-left: 2px solid #747474;
+  padding: 15px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  margin-left: 15px;
+}
+.datepicker__input {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #747474;
+  border: none;
+  margin-bottom: 5px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.datepicker__icon {
+  margin: 0 19px 5px 0;
+  width: 12px;
+  height: 12px;
+}
+.datepicker--wrapper {
+  width: 547px;
+  height: 54px;
+  border: 2px solid #747474;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
   margin-top: 16px;
 }
 </style>
