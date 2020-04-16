@@ -1,5 +1,5 @@
 <template>
-  <section class="apartment">
+  <section class="apartment" @click="this.checkApart">
     <b-modal :active.sync="isActive" has-modal-card trap-focus aria-role="dialog" aria-modal>
       <ReservationForm :apartId="apart.id" :title="apart.name" />
     </b-modal>
@@ -67,7 +67,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getAvailible"])
+    ...mapActions(["getAvailible", "getApart"]),
+    checkApart() {
+      console.log(this.apart.id);
+      this.getApart(this.apart.id);
+    }
   }
 };
 </script>
@@ -167,5 +171,25 @@ export default {
 
 .hover-arrow {
   display: none;
+}
+@media (max-width: 1055px) {
+  .flex-container {
+    flex-direction: column;
+    max-height: initial;
+  }
+  .item {
+    height: auto;
+    border: 2px solid transparent;
+    cursor: pointer;
+    &:hover {
+      border: 2px solid transparent;
+      .hover-arrow {
+        display: none;
+      }
+    }
+  }
+  .price {
+    text-align: left;
+  }
 }
 </style>

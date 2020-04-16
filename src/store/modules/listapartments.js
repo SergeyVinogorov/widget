@@ -19,13 +19,13 @@ export default {
         date_to: moment(date_to).format("YYYY-MM-DD hh:mm:ss"),
         guests: rootState.picker.guests,
       };
-      const passToken = window.localStorage.getItem("token");
-
+      const passTokenModule = window.localStorage.getItem("tokenModule");
+      const AuthStr = "Bearer ".concat(passTokenModule);
       const apiClinet = axios.create({
         baseURL: `https://test.aircheckin.ru`,
         header: {
           Accept: "application/json",
-          // Authorization: Bearer + passToken,
+          Authorization: AuthStr,
         },
       });
       // await axios({

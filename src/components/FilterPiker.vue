@@ -11,6 +11,7 @@
       tint-color="#000"
       show-caps
       :popover="{ placement: 'bottom', visibility: 'click' }"
+      class="main-datepicker"
     >
       <div class="datepicker--wrapper">
         <div class="datepicker__date-in">
@@ -266,5 +267,65 @@ export default {
   align-items: center;
   cursor: pointer;
   margin-top: 16px;
+}
+@media (max-width: 1229px) {
+  .picker--right {
+    width: 547px;
+  }
+  .add-guest {
+    margin: 16px 10px 0px 0px;
+    flex-grow: 1;
+  }
+  .reservation-button {
+    margin: 16px 0px 0px 10px;
+    flex-grow: 1;
+  }
+  .datepicker__date-out {
+    margin-left: 0px;
+  }
+}
+@media (max-width: 547px) {
+  .main-datepicker {
+    width: 100%;
+  }
+  .datepicker--wrapper {
+    width: 100%;
+  }
+  .add-guest {
+    width: auto;
+  }
+  .reservation-button {
+    width: auto;
+  }
+}
+@media (max-width: 430px) {
+  .picker--right {
+    width: 100%;
+    flex-direction: column;
+  }
+  .add-guest {
+    margin: 16px 0px;
+  }
+  .reservation-button {
+    margin: 16px 0px;
+  }
+  .datepicker--wrapper {
+    flex-direction: column;
+    height: auto;
+    border: none;
+  }
+
+  .datepicker__date-in {
+    width: 100%;
+    border: 2px solid #747474;
+    margin: 16px 0px;
+    height: 54px;
+  }
+  .datepicker__date-out {
+    width: 100%;
+    border: 2px solid #747474;
+    margin: 16px 0px;
+    height: 54px;
+  }
 }
 </style>

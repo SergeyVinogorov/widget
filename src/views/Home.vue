@@ -87,7 +87,7 @@ export default {
   },
   // this.$moment(this.range.start).format("DD-MM-YYYY")
   methods: {
-    ...mapActions(["login", "getAvailible"])
+    ...mapActions(["login", "getAvailible", "getReservationToken"])
   },
   async mounted() {
     let params = {
@@ -95,7 +95,7 @@ export default {
       password: "password"
     };
     await this.login(params);
-    await this.getAvailible();
+    await this.getReservationToken();
   }
 };
 </script>
@@ -121,6 +121,20 @@ export default {
     padding-right: 80px;
     padding-left: 80px;
     margin: 0px auto;
+  }
+}
+@media (max-width: 1055px) {
+  .apart__card {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .apart__list-item {
+    width: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .apart__list-item {
+    width: 100%;
   }
 }
 @media (min-width: 744px) {
