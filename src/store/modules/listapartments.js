@@ -10,12 +10,15 @@ export default {
     },
   },
   actions: {
-    async getAvailible({ commit, rootState }) {
+    async getAvailible({ commit, rootState }, filter) {
+      console.log(filter);
+
+      let date_from = filter ? filter.start : rootState.picker.dateIn;
+      let date_to = filter ? filter.end : rootState.picker.dateOut;
+
       const params = {
-        date_from: moment(rootState.picker.dateIn).format(
-          "YYYY-MM-DD hh:mm:ss"
-        ),
-        date_to: moment(rootState.picker.dateOut).format("YYYY-MM-DD hh:mm:ss"),
+        date_from: moment(date_from).format("YYYY-MM-DD hh:mm:ss"),
+        date_to: moment(date_to).format("YYYY-MM-DD hh:mm:ss"),
         guests: rootState.picker.guests,
       };
       const passToken = window.localStorage.getItem("token");

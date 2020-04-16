@@ -8,7 +8,6 @@
       v-model="range"
       locale="ru"
       :masks="{ title: 'MMM YYYY' }"
-      select-attribute="selectAttribute"
       tint-color="#000"
       show-caps
       :popover="{ placement: 'bottom', visibility: 'click' }"
@@ -67,39 +66,6 @@
 </template>
 
 <script>
-// <b-field class="date__in">
-//   <b-datepicker
-//     :date-formatter="
-//       (date) =>
-//         this.$moment(date)
-//           .locale(this.lang)
-//           .format('DD-MM-YYYY')
-//     "
-//     :month-names="this.localMonth"
-//     :min-date="this.getMinDate"
-//     :day-names="this.localDay"
-//     placeholder="Заезд"
-//     icon="calendar-arrow-left"
-//     v-model="dateIn"
-//   />
-// </b-field>
-// <b-field class="date__out">
-//   <b-datepicker
-//     :date-formatter="
-//       (date) =>
-//         this.$moment(date)
-//           .locale(this.lang)
-//           .format('DD-MM-YYYY')
-//     "
-//     :month-names="this.localMonth"
-//     :min-date="this.getDateIn"
-//     :day-names="this.localDay"
-//     placeholder="Выезд"
-//     icon="calendar-arrow-right"
-//     v-model="dateOut"
-//     ref="out"
-//   />
-// </b-field>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -107,20 +73,10 @@ export default {
   data() {
     return {
       lang: "ru",
-      localMonth: [
-        "Январь",
-        "Февраль",
-        "Март",
-        "Апрель",
-        "Май",
-        "Июнь",
-        "Июль",
-        "Август",
-        "Сентябрь",
-        "Октябрь",
-        "Ноябрь",
-        "Декабрь"
-      ],
+      range: {
+        start: this.dateIn,
+        end: this.dateOut
+      },
       localDay: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
       checkIn: "Заезд",
       checkOut: "Выезд",
@@ -170,15 +126,15 @@ export default {
       }
     }
   },
-  watch: {
-    getDateIn(newValue, oldValue) {
-      let dateOutModel = this.getDateIn;
-      dateOutModel = this.$moment(dateOutModel)
-        .add(1, "days")
-        .toDate();
-      this.$store.commit("insertDateOut", dateOutModel);
-    }
-  },
+  // watch: {
+  //   getDateIn(newValue, oldValue) {
+  //     let dateOutModel = this.getDateIn;
+  //     dateOutModel = this.$moment(dateOutModel)
+  //       .add(1, "days")
+  //       .toDate();
+  //     this.$store.commit("insertDateOut", dateOutModel);
+  //   }
+  // },
   methods: {
     ...mapMutations([
       "insertDateIn",
@@ -190,7 +146,7 @@ export default {
     ...mapActions(["getAvailible"]),
     async check() {
       console.log("yes");
-      await this.getAvailible();
+      await this.getAvailible(this.range);
     }
   }
 };

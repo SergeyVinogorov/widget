@@ -101,15 +101,15 @@ export default {
   },
   methods: {
     ...mapActions(["login", "getAvailible"])
+  },
+  async mounted() {
+    let params = {
+      email: "admin@admin.com",
+      password: "password"
+    };
+    await this.login(params);
+    await this.getAvailible();
   }
-  // async mounted() {
-  //   let params = {
-  //     email: "admin@admin.com",
-  //     password: "password"
-  //   };
-  // await this.login(params);
-  // await this.getAvailible();
-  // }
 };
 </script>
 <style lang="scss" scoped>
