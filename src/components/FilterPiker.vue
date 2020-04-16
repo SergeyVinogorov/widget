@@ -16,14 +16,13 @@
         <div class="datepicker__date-in">
           <div class="icon-wrapper">
             <img src="@/assets/Shapeapart.svg" alt="Icon datepicker" class="datepicker__icon" />
-            <div class="datepicker__input">Заезд</div>
+            <div class="datepicker__input">{{displayDateIn}}</div>
           </div>
-
           <span class="mdi mdi-chevron-down"></span>
         </div>
 
         <div class="datepicker__date-out">
-          <div class="datepicker__input">Выезд</div>
+          <div class="datepicker__input">{{displayDateOut}}</div>
           <span class="mdi mdi-chevron-down"></span>
         </div>
       </div>
@@ -72,15 +71,11 @@ export default {
   name: "Filter-picker",
   data() {
     return {
-      lang: "ru",
       range: {
-        start: this.dateIn,
-        end: this.dateOut
+        start: this.getDateIn,
+        end: this.getDateOut
       },
-      localDay: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
-      checkIn: "Заезд",
-      checkOut: "Выезд",
-      minDate: new Date()
+      start: this.$moment(this.getDateIn).format("DD-MM-YYYY")
     };
   },
   computed: {
@@ -101,21 +96,15 @@ export default {
         }
       });
     },
-    dateIn: {
-      get() {
-        return this.getDateIn;
-      },
-      set(value) {
-        this.$store.commit("insertDateIn", value);
-      }
+    displayDateIn() {
+      return this.start == this.$moment(this.range.start).format("DD-MM-YYYY")
+        ? "Заезд"
+        : this.$moment(this.range.start).format("DD-MM-YYYY");
     },
-    dateOut: {
-      get() {
-        return this.getDateOut;
-      },
-      set(value) {
-        this.$store.commit("insertDateOut", value);
-      }
+    displayDateOut() {
+      return this.start == this.$moment(this.range.start).format("DD-MM-YYYY")
+        ? "Выезд"
+        : this.$moment(this.range.end).format("DD-MM-YYYY");
     },
     guests: {
       get() {
@@ -126,15 +115,6 @@ export default {
       }
     }
   },
-  // watch: {
-  //   getDateIn(newValue, oldValue) {
-  //     let dateOutModel = this.getDateIn;
-  //     dateOutModel = this.$moment(dateOutModel)
-  //       .add(1, "days")
-  //       .toDate();
-  //     this.$store.commit("insertDateOut", dateOutModel);
-  //   }
-  // },
   methods: {
     ...mapMutations([
       "insertDateIn",
@@ -145,7 +125,6 @@ export default {
     ]),
     ...mapActions(["getAvailible"]),
     async check() {
-      console.log("yes");
       await this.getAvailible(this.range);
     }
   }
@@ -157,6 +136,7 @@ export default {
   align-items: center;
   padding: 8px 8px 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .picker--right {
   display: flex;

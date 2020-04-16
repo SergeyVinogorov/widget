@@ -9,20 +9,6 @@
   </div>
 </template>
 <script>
-// :months-labels="[
-//   'Январь',
-//   'Февраль',
-//   'Март',
-//   'Апрель',
-//   'Май',
-//   'Июнь',
-//   'Июль',
-//   'Август',
-//   'Сентябрь',
-//   'Октябрь',
-//   'Ноябрь',
-//   'Декабрь'
-// ]"
 // @ is an alias to /src
 import ApartamentItem from "@/components/ApartamentItem";
 import FilterPicker from "@/components/FilterPiker";
@@ -99,6 +85,7 @@ export default {
       };
     }
   },
+  // this.$moment(this.range.start).format("DD-MM-YYYY")
   methods: {
     ...mapActions(["login", "getAvailible"])
   },
@@ -121,13 +108,11 @@ export default {
 }
 .apart__card {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 .apart__list-item {
-  padding: 8px 8px 12px;
-  text-align: left;
-  width: 32%;
+  display: flex;
+  justify-content: center;
 }
 @media (min-width: 1128px) {
   .home {

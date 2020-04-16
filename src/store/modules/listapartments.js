@@ -11,8 +11,6 @@ export default {
   },
   actions: {
     async getAvailible({ commit, rootState }, filter) {
-      console.log(filter);
-
       let date_from = filter ? filter.start : rootState.picker.dateIn;
       let date_to = filter ? filter.end : rootState.picker.dateOut;
 
@@ -41,7 +39,6 @@ export default {
       apiClinet
         .get("/api/v1/apartments/get-available", { params })
         .then((resp) => {
-          console.log(resp.data);
           if (Array.isArray(resp.data.data) && resp.data.success) {
             const apart = resp.data.data;
             commit("insertApartments", apart);

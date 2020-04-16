@@ -1,25 +1,27 @@
 <template>
   <section class="apartment">
-    <div class="apartment_header">
-      <h3 class="apartament__title">{{apart.name}}</h3>
-      <p class="description">
-        <span class="has-text-grey-light">Квартира целиком: {{apart.rooms}} {{flatText}}</span>
-      </p>
-    </div>
-    <div class="apart__description">
-      <p>{{ apart.description }}</p>
-    </div>
-    <p class="apart_footer">
-      <span>{{ apart.guests }} {{guestsText}}</span>
-      <span>
-        <span class="price has-text-black has-text-weight-semibold">{{ apart.price }}</span>
-        <span>за ночь</span>
-      </span>
-      <b-button class="reservation__button" type="is-success" @click="isActive = true">Забронировать</b-button>
-    </p>
     <b-modal :active.sync="isActive" has-modal-card trap-focus aria-role="dialog" aria-modal>
       <ReservationForm :apartId="apart.id" :title="apart.name" />
     </b-modal>
+    <div class="item flex-container">
+      <img class="image" src="@/assets/apart-photo.png" />
+      <div class="text-block">
+        <h2 class="text-block-header">{{apart.name}}</h2>
+        <p
+          class="after-header-description"
+        >Москва | {{apart.rooms}} {{flatText}} | {{ apart.guests }} {{guestsText}}</p>
+        <div class="flex-container">
+          <p class="price">
+            ₽ {{ apart.price }}| сутки
+            <span class="no-comission">без комиссии</span>
+          </p>
+        </div>
+        <p class="apart-info">{{ apart.description }}</p>
+      </div>
+      <div>
+        <img class="hover-arrow" src="@/assets/hover-right-arrow.png" />
+      </div>
+    </div>
   </section>
 </template>
     
@@ -74,8 +76,6 @@ export default {
   min-width: 285px;
   height: 100%;
   padding: 8px 8px 12px;
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -93,5 +93,79 @@ export default {
 }
 .reservation__button {
   margin-left: 24px;
+}
+//style new cart
+.item {
+  max-width: 1134px;
+  max-height: 547px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  &:hover {
+    border: 2px solid #747474;
+    .hover-arrow {
+      display: block;
+      margin-right: 18px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.flex-container {
+  display: flex;
+}
+
+.text-block {
+  padding: 40px;
+}
+
+.text-block-header {
+  margin-bottom: 7px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: left;
+}
+
+.after-header-description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #747474;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 30px;
+}
+
+.no-comission {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  color: #747474;
+}
+
+.apart-info {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 28px;
+  text-align: left;
+}
+
+.hover-arrow {
+  display: none;
 }
 </style>
