@@ -192,4 +192,9 @@ export default {
     text-align: left;
   }
 }
+@media (max-width: 768px) {
+  .text-block {
+    padding: 20px;
+  }
+}
 </style>
