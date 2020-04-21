@@ -4,11 +4,7 @@
       <header class="modal-card-head">
         <p class="modal-card-title">Апартамент: {{ title }}</p>
       </header>
-      <b-field
-        for="nameReserv"
-        label="Введите Имя"
-        :label-position="labelPosition"
-      >
+      <b-field for="nameReserv" label="Введите Имя" :label-position="labelPosition">
         <b-input
           id="nameReserv"
           type="text"
@@ -19,11 +15,7 @@
           minlength="3"
         ></b-input>
       </b-field>
-      <b-field
-        for="emailReserv"
-        label="Введите email"
-        :label-position="labelPosition"
-      >
+      <b-field for="emailReserv" label="Введите email" :label-position="labelPosition">
         <b-input
           placeholder="Email"
           id="emailReserv"
@@ -35,11 +27,13 @@
           maxlength="30"
         ></b-input>
       </b-field>
-      <b-field
-        for="phoneReserv"
+      <BaseInput
         label="Введите телефон"
-        :label-position="labelPosition"
-      >
+        v-model="phone"
+        type="date"
+        :classInput="reservation__field"
+      />
+      <b-field for="phoneReserv" label="Введите телефон" :label-position="labelPosition">
         <b-input
           id="phoneReserv"
           v-model="phone"
@@ -49,37 +43,44 @@
         ></b-input>
       </b-field>
       <div class="control">
-        <button class="button is-success" type="submit">Забронировать</button>
+        <BaseButton class="button" type="submit">Завбронировать</BaseButton>
       </div>
     </form>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import BaseButton from "./BaseButton";
+import BaseInput from "./BaseInput";
+// <button class="button is-success" type="submit">Забронировать</button>
 
 export default {
   name: "ReservetionForm",
   props: {
     post: {
-      type: Object,
+      type: Object
     },
     apartId: {
-      type: Number,
+      type: Number
     },
     title: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
       name: "",
       email: "",
       phone: "",
-      labelPosition: "on board",
+      labelPosition: "on board"
     };
   },
+  components: {
+    BaseButton,
+    BaseInput
+  },
   computed: {
-    ...mapGetters(["getUsrId", "getSuccess", "getCurrentPage"]),
+    ...mapGetters(["getUsrId", "getSuccess", "getCurrentPage"])
   },
   methods: {
     ...mapActions(["createPost", "updatePost"]),
@@ -91,7 +92,7 @@ export default {
         phone: this.phone,
         createdAt: Date(),
         updateAt: Date(),
-        userId: this.userId,
+        userId: this.userId
       });
       this.name = this.email = this.phone = "";
     },
@@ -101,14 +102,14 @@ export default {
       } else {
         return "Проверьте введенные данные";
       }
-    },
+    }
   },
   mounted() {
     this.success = this.getSuccess;
   },
   created() {
     this.userId = this.getUsrId;
-  },
+  }
 };
 </script>
 <style lang="scss">
@@ -120,5 +121,9 @@ export default {
   position: relative;
   background-color: #ffffff;
   color: #363636;
+}
+.reservation__field {
+  width: 100%;
+  height: 54px;
 }
 </style>

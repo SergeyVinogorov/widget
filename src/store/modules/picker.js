@@ -12,28 +12,28 @@ export default {
       .toDate(),
   },
   mutations: {
-    insertDateIn(state, value) {
+    INSERT_DATE_IN(state, value) {
       state.dateIn = value;
     },
-    insertDateOut(state, value) {
+    INSERT_DATE_OUT(state, value) {
       state.dateOut = value;
     },
-    insertGuests(state, value) {
+    INSERT_GUESTS(state, value) {
       state.dateOut = value;
     },
-    increment(state) {
+    INCREMENT(state) {
       state.guests++;
     },
-    decrement(state) {
+    DECREMENT(state) {
       state.guests--;
     },
   },
   actions: {
     increment({ commit }) {
-      commit("increment");
+      commit("INCREMENT");
     },
     decrement({ commit }) {
-      commit("decrement");
+      commit("DECREMENT");
     },
   },
   getters: {

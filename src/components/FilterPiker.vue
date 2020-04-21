@@ -1,6 +1,7 @@
 <template>
   <div class="picker">
     <v-date-picker
+      :select-attribute="setattribute"
       :columns="layout.columns"
       :rows="layout.rows"
       :is-expanded="layout.isExpanded"
@@ -8,7 +9,6 @@
       v-model="range"
       locale="ru"
       :masks="{ title: 'MMM YYYY' }"
-      tint-color="#000"
       show-caps
       :popover="{ placement: 'bottom', visibility: 'click' }"
       class="main-datepicker"
@@ -17,13 +17,13 @@
         <div class="datepicker__date-in">
           <div class="icon-wrapper">
             <img src="@/assets/Shapeapart.svg" alt="Icon datepicker" class="datepicker__icon" />
-            <div class="datepicker__input">{{displayDateIn}}</div>
+            <div class="datepicker__input">{{ displayDateIn }}</div>
           </div>
           <span class="mdi mdi-chevron-down"></span>
         </div>
 
         <div class="datepicker__date-out">
-          <div class="datepicker__input">{{displayDateOut}}</div>
+          <div class="datepicker__input">{{ displayDateOut }}</div>
           <span class="mdi mdi-chevron-down"></span>
         </div>
       </div>
@@ -39,34 +39,34 @@
           <button
             type="button"
             :class="
-            getGuests === 0
-              ? 'add-guest__button--disabled'
-              : 'add-guest__button'
-          "
-            @click="this.decrement"
+              getGuests === 0
+                ? 'add-guest__button--disabled'
+                : 'add-guest__button'
+            "
+            @click="this.DECREMENT"
             :disabled="getGuests === 0 ? true : false"
           >-</button>
           <span class="add-guest__guest">{{ getGuests }}</span>
           <button
             type="button"
             :class="
-            getGuests === 17
-              ? 'add-guest__button--disabled'
-              : 'add-guest__button'
-          "
-            @click="this.increment"
+              getGuests === 17
+                ? 'add-guest__button--disabled'
+                : 'add-guest__button'
+            "
+            @click="this.INCREMENT"
             :disabled="getGuests === 17 ? true : false"
           >+</button>
         </div>
       </div>
-
-      <button type="button" class="reservation-button" @click="check()">Найти апартаменты</button>
+      <BaseButton type="button" class="reservation-button" @click="check()">Найти апартаменты</BaseButton>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import BaseButton from "./BaseButton";
 
 export default {
   name: "Filter-picker",
@@ -76,8 +76,24 @@ export default {
         start: this.getDateIn,
         end: this.getDateOut
       },
-      start: this.$moment(this.getDateIn).format("DD-MM-YYYY")
+      start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
+      setattribute: {
+        highlight: {
+          backgroundColor: "red",
+          borderRadius: "0",
+          color: "black",
+          fillMode: "gray"
+        },
+        contentStyle: {
+          borderRadius: "0",
+          color: "#ffffff",
+          backgroundColor: "transparent"
+        }
+      }
     };
+  },
+  components: {
+    BaseButton
   },
   computed: {
     ...mapGetters(["getGuests", "getDateIn", "getDateOut", "getMinDate"]),
@@ -97,6 +113,7 @@ export default {
         }
       });
     },
+
     displayDateIn() {
       return this.start == this.$moment(this.range.start).format("DD-MM-YYYY")
         ? "Заезд"
@@ -118,11 +135,11 @@ export default {
   },
   methods: {
     ...mapMutations([
-      "insertDateIn",
-      "insertDateOut",
-      "insertGuests",
-      "increment",
-      "decrement"
+      "INSERT_DATE_IN",
+      "INSERT_DATE_OUT",
+      "INSERT_GUESTS",
+      "INCREMENT",
+      "DECREMENT"
     ]),
     ...mapActions(["getAvailible"]),
     async check() {

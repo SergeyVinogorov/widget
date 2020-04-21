@@ -1,33 +1,26 @@
 import axios from "axios";
-const apiClinet = axios.create({
-  baseURL: `http://test.aircheckin.ru`,
-  withCredentials: false,
-  header: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-});
+
 export default {
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
   },
   mutations: {
-    auth_request(state) {
+    AUTH_REQUEST(state) {
       state.status = "loading";
     },
-    auth_success(state, token) {
+    AUTH_SUCCESS(state, token) {
       state.status = "success";
       state.token = token;
     },
-    auth_error(state) {
+    AUTH_ERROR(state) {
       state.status = "error";
     },
   },
 
   actions: {
-    async login({ commit }, params) {
-      commit("auth_request");
+    async login({ commit, dispatch }, params) {
+      commit("AUTH_REQUEST");
       let bodyFormData = new FormData();
       bodyFormData.set("email", params.email);
       bodyFormData.set("password", params.password);
@@ -41,14 +34,24 @@ export default {
             const token = resp.data.data.token;
             localStorage.setItem("token", token);
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token);
+            commit("AUTH_SUCCESS", token);
+            const notification = {
+              type: "success",
+              message: "Your are logged in!",
+            };
+            dispatch("add", notification, { root: true });
           } else {
-            commit("auth_error");
+            commit("AUTH_ERROR");
           }
         })
-        .catch((err) => {
-          commit("auth_error");
+        .catch((error) => {
+          commit("AUTH_ERROR");
           localStorage.removeItem("token");
+          const notification = {
+            type: "error",
+            message: "There was a problem fetching events: " + error.message,
+          };
+          dispatch("add", notification, { root: true });
           console.log(err);
         });
     },

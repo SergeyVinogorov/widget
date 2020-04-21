@@ -1,11 +1,14 @@
 <template>
   <div class="home">
     <FilterPicker />
-    <ul class="apart__card">
-      <li class="apart__list-item" v-for="apart in allApartments" :key="apart.id">
-        <ApartamentItem :apart="apart" />
-      </li>
-    </ul>
+    <b-notification :closable="false">
+      <ul class="apart__card">
+        <li class="apart__list-item" v-for="apart in allApartments" :key="apart.id">
+          <ApartamentItem :apart="apart" />
+        </li>
+      </ul>
+      <b-loading :is-full-page="false" :active.sync="loader" :can-cancel="true" />
+    </b-notification>
   </div>
 </template>
 <script>
@@ -20,8 +23,8 @@ export default {
       today: new Date(),
       mode: "range",
       range: {},
-
-      selectedDate: new Date(2018, 0, 10)
+      selectedDate: new Date(2018, 0, 10),
+      isLoading: false
     };
   },
   components: {
@@ -29,7 +32,7 @@ export default {
     FilterPicker
   },
   computed: {
-    ...mapGetters(["allApartments"]),
+    ...mapGetters(["allApartments", "takeStatus"]),
     layout() {
       return this.$screens({
         // Default layout for mobile
@@ -83,6 +86,18 @@ export default {
         type: "is-primary",
         message: ""
       };
+    },
+    loader() {
+      if (this.takeStatus == "loading") {
+        return true;
+      }
+      if (
+        this.takeStatus == "success" ||
+        this.takeStatus == "error" ||
+        this.takeStatus == ""
+      ) {
+        this.isLoading = false;
+      }
     }
   },
   // this.$moment(this.range.start).format("DD-MM-YYYY")
@@ -100,6 +115,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.notification {
+  background-color: transparent;
+  min-height: 120px;
+}
 .home {
   box-sizing: border-box;
   padding-left: 24px;

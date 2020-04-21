@@ -1,36 +1,41 @@
 <template>
-  <section class="apartment" @click="this.checkApart">
-    <b-modal :active.sync="isActive" has-modal-card trap-focus aria-role="dialog" aria-modal>
-      <ReservationForm :apartId="apart.id" :title="apart.name" />
-    </b-modal>
-    <div class="item flex-container">
-      <img class="image" src="@/assets/apart-photo.png" />
-      <div class="text-block">
-        <h2 class="text-block-header">{{apart.name}}</h2>
-        <p
-          class="after-header-description"
-        >Москва | {{apart.rooms}} {{flatText}} | {{ apart.guests }} {{guestsText}}</p>
-        <div class="flex-container">
-          <p class="price">
-            ₽ {{ apart.price }}| сутки
-            <span class="no-comission">без комиссии</span>
-          </p>
+  <div class="apartment--wrapper">
+    <transition name="slide-fade" mode="out-in">
+      <section v-if="!isActive" class="apartment" @click="this.checkApart">
+        <div class="item flex-container">
+          <img class="image" src="@/assets/apart-photo.png" />
+          <div class="text-block">
+            <h2 class="text-block-header">{{apart.name}}</h2>
+            <p
+              class="after-header-description"
+            >Москва | {{apart.rooms}} {{flatText}} | {{ apart.guests }} {{guestsText}}</p>
+            <div class="flex-container">
+              <p class="price">
+                ₽ {{ apart.price }}| сутки
+                <span class="no-comission">без комиссии</span>
+              </p>
+            </div>
+            <p class="apart-info">{{ apart.description }}</p>
+          </div>
+          <div>
+            <img class="hover-arrow" src="@/assets/hover-right-arrow.png" />
+          </div>
         </div>
-        <p class="apart-info">{{ apart.description }}</p>
-      </div>
-      <div>
-        <img class="hover-arrow" src="@/assets/hover-right-arrow.png" />
-      </div>
-    </div>
-  </section>
+      </section>
+      <ApartCart v-if="isActive" />
+    </transition>
+  </div>
 </template>
     
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ReservationForm from "@/components/ReservetionForm.vue";
+import ApartCart from "./ApartCart";
 
 export default {
   name: "ApartmentItem",
+  components: {
+    ApartCart
+  },
   props: {
     apart: {
       type: Object,
@@ -44,9 +49,7 @@ export default {
       isActive: false
     };
   },
-  components: {
-    ReservationForm
-  },
+
   computed: {
     ...mapGetters(["allApartments"]),
     flatText() {
@@ -69,8 +72,8 @@ export default {
   methods: {
     ...mapActions(["getAvailible", "getApart"]),
     checkApart() {
-      console.log(this.apart.id);
       this.getApart(this.apart.id);
+      this.isActive = true;
     }
   }
 };
@@ -171,6 +174,19 @@ export default {
 
 .hover-arrow {
   display: none;
+}
+/**Transitions */
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.2s ease;
+}
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
 }
 @media (max-width: 1055px) {
   .flex-container {

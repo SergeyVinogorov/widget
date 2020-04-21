@@ -5,7 +5,7 @@ export default {
     allApartments: [],
   },
   mutations: {
-    insertApartments(state, apart) {
+    INSERT_APARTMENTS(state, apart) {
       state.allApartments = apart;
     },
   },
@@ -41,7 +41,7 @@ export default {
         .then((resp) => {
           if (Array.isArray(resp.data.data) && resp.data.success) {
             const apart = resp.data.data;
-            commit("insertApartments", apart);
+            commit("INSERT_APARTMENTS", apart);
           }
         })
         .catch((error) => {

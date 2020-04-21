@@ -6,21 +6,21 @@ export default {
     module: localStorage.getItem("module") || "",
   },
   mutations: {
-    auth_request(state) {
+    AUTH_REQUEST(state) {
       state.status = "loading";
     },
-    auth_success(state, token) {
+    AUTH_SUCCESS(state, token) {
       state.status = "success";
       state.token = token;
     },
-    auth_error(state) {
+    AUTH_ERROR(state) {
       state.status = "error";
     },
   },
 
   actions: {
-    async login({ commit }, params) {
-      commit("auth_request");
+    async login({ commit, dispatch }, params) {
+      commit("AUTH_REQUEST");
       let bodyFormData = new FormData();
       bodyFormData.set("email", params.email);
       bodyFormData.set("password", params.password);
@@ -34,13 +34,18 @@ export default {
             const token = resp.data.data.token;
             localStorage.setItem("token", token);
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token);
+            commit("AUTH_SUCCESS", token);
           } else {
-            commit("auth_error");
+            commit("AUTH_ERROR");
           }
         })
         .catch((err) => {
-          commit("auth_error");
+          const notification = {
+            type: "error",
+            message: "There was a problem fetching events: " + error.message,
+          };
+          dispatch("add", notification, { root: true });
+          commit("AUTH_ERROR");
           localStorage.removeItem("token");
           console.log(err);
         });

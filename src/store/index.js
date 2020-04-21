@@ -5,6 +5,7 @@ import auth from "./modules/auth";
 import picker from "./modules/picker";
 import listApartments from "./modules/listapartments";
 import getapart from "./modules/getapart";
+import notification from "./modules/notification";
 
 Vue.use(moment);
 
@@ -15,6 +16,7 @@ const store = new Vuex.Store({
     picker,
     listApartments,
     getapart,
+    notification,
   },
 });
 export default store;

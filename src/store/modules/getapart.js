@@ -12,24 +12,27 @@ export default {
     tokenModule: localStorage.getItem("tokenModule") || "",
   },
   mutations: {
-    insertApart(state, apart) {
+    INSERT_APART(state, apart) {
       state.apart = apart;
     },
-    module_request(state) {
+    MODULE_REQUEST(state) {
       state.statusModule = "loading";
     },
-    module_success(state, token) {
+    MODULE_SUCCESS(state, token) {
       state.statusModule = "success";
       state.tokenModule = token;
     },
-    module_error(state) {
+    LOAD_SUCCESS(state) {
+      state.statusModule = "success";
+    },
+    MODULE_ERROR(state) {
       state.statusModule = "error";
     },
   },
 
   actions: {
     async getReservationToken({ commit }) {
-      commit("module_request");
+      commit("MODULE_REQUEST");
       let bodyFormData = new FormData();
       await axios({
         method: "get",
@@ -43,18 +46,30 @@ export default {
             axios.defaults.headers.common[
               "Authorization"
             ] = `Bearer ${tokenModule}`;
-            commit("module_success", tokenModule);
+            commit("MODULE_SUCCESS", tokenModule);
+            const notification = {
+              type: "success",
+              message: "Reservation token get success!",
+            };
+            dispatch("add", notification, { root: true });
           } else {
-            commit("module_error");
+            commit("MODULE_ERROR");
           }
         })
         .catch((err) => {
-          commit("module_error");
+          commit("MODULE_ERROR");
+          const notification = {
+            type: "error",
+            message:
+              "There was a problem fetching reservation token" + error.message,
+          };
+          dispatch("add", notification, { root: true });
           localStorage.removeItem("tokenModule");
           console.log(err);
         });
     },
     async getApart({ commit, dispatch }, paramsId) {
+      commit("MODULE_REQUEST");
       // await dispatch("getReservationToken");
       const passTokenModule = window.localStorage.getItem("tokenModule");
       const AuthStr = "Bearer ".concat(passTokenModule);
@@ -62,25 +77,26 @@ export default {
         .get("/api/v1/apartments/get/" + paramsId, {
           headers: { Authorization: AuthStr },
         })
-        .then((resp) => {
-          console.log(resp.data);
-
+        .then(async (resp) => {
           if (typeof resp.data == "object" && resp.data.success) {
-            console.log(resp.data.data);
-
             const apart = resp.data.data;
-            commit("insertApart", apart);
+
+            await commit("INSERT_APART", apart);
+            await commit("LOAD_SUCCESS");
           }
         })
         .catch((error) => {
+          commit("MODULE_ERROR");
           console.log(error);
         });
     },
   },
-
   getters: {
     takeApart(state) {
       return state.apart;
+    },
+    takeStatus(state) {
+      return state.statusModule;
     },
   },
 };
