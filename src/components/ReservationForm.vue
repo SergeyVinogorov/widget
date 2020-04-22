@@ -8,14 +8,14 @@
         label="Введите имя"
         v-model="name"
         type="text"
-        classInput="reservation__field"
+        class="reservation__field"
         classLabel="reservation__label"
-        :class="{ error: $v.event.name.$error }"
-        @blur="v.event.name.touch()"
+        :class="{ error: $v.name.$error }"
+        @blur="$v.name.$touch()"
       />
-      <template v-if="$v.event.name.$error">
-        <p v-if="!$v.event.name.required" class="errorMessage">
-          Поле "Ваше имя" обязательно для заполнения
+      <template v-if="$v.name.$error">
+        <p v-if="!$v.name.required" class="errorMessage">
+          Поле обязательно для заполнения
         </p>
       </template>
 
@@ -23,14 +23,23 @@
         label="Введите email"
         v-model="email"
         type="text"
-        classInput="reservation__field"
+        class="reservation__field"
         classLabel="reservation__label"
+        @blur="$v.email.$touch()"
       />
+      <template v-if="$v.email.$error">
+        <p v-if="!$v.email.email" class="errorMessage">
+          Введите корректный email
+        </p>
+        <p v-if="!$v.email.required" class="errorMessage">
+          Поле обязательно для заполнения
+        </p>
+      </template>
       <BaseInput
         label="Введите телефон"
         v-model="phone"
         type="text"
-        classInput="reservation__field"
+        class="reservation__field"
         classLabel="reservation__label"
       />
 
@@ -45,10 +54,12 @@ import { mapGetters, mapActions } from "vuex";
 import BaseButton from "./BaseButton";
 import BaseInput from "./BaseInput";
 import { required, email } from "vuelidate/lib/validators";
+import formMixin from "../mixins/form";
 // <button class="button is-success" type="submit">Забронировать</button>
 
 export default {
   name: "ReservetionForm",
+  mixins: [formMixin],
   props: {
     post: {
       type: Object,
@@ -68,6 +79,11 @@ export default {
       labelPosition: "on board",
     };
   },
+  validations: {
+    name: { required },
+    email: { required, email },
+    phone: { required },
+  },
   components: {
     BaseButton,
     BaseInput,
@@ -75,13 +91,7 @@ export default {
   // computed: {
   //   ...mapGetters(["getUsrId", "getSuccess", "getCurrentPage"]),
   // },
-  validations: {
-    event: {
-      name: { required },
-      email: { required, email },
-      phone: { required },
-    },
-  },
+
   methods: {
     ...mapActions(["createPost", "updatePost"]),
     async submit() {
@@ -126,14 +136,26 @@ export default {
   margin-bottom: 20px;
 }
 .reservation__field {
-  width: 100%;
-  height: 36px;
-  padding: 5px 10px;
-  margin-bottom: 20px;
+  input {
+    width: 100%;
+    height: 36px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
 }
 .reservation__label {
   font-weight: 700;
   font-size: 16px;
+  margin-bottom: 16px;
+}
+.error {
+  input {
+    border-color: red;
+    background: #fdd;
+  }
+}
+.errorMessage {
+  color: red;
   margin-bottom: 16px;
 }
 </style>

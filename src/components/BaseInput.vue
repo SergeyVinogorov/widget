@@ -5,7 +5,7 @@
       :value="value"
       @input="updateValue"
       v-bind="$attrs"
-      :class="classInput"
+      v-on="listeners"
     />
   </div>
 </template>
@@ -20,11 +20,17 @@ export default {
       default: "",
     },
     value: [String, Number],
-    classInput: {
-      type: String,
-    },
+
     classLabel: {
       type: String,
+    },
+  },
+  computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        input: this.updateValue,
+      };
     },
   },
   methods: {
