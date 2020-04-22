@@ -3,11 +3,19 @@
     <FilterPicker />
     <b-notification :closable="false">
       <ul class="apart__card">
-        <li class="apart__list-item" v-for="apart in allApartments" :key="apart.id">
+        <li
+          class="apart__list-item"
+          v-for="apart in allApartments"
+          :key="apart.id"
+        >
           <ApartamentItem :apart="apart" />
         </li>
       </ul>
-      <b-loading :is-full-page="false" :active.sync="loader" :can-cancel="true" />
+      <b-loading
+        :is-full-page="false"
+        :active.sync="loader"
+        :can-cancel="true"
+      />
     </b-notification>
   </div>
 </template>
@@ -24,12 +32,12 @@ export default {
       mode: "range",
       range: {},
       selectedDate: new Date(2018, 0, 10),
-      isLoading: false
+      isLoading: false,
     };
   },
   components: {
     ApartamentItem,
-    FilterPicker
+    FilterPicker,
   },
   computed: {
     ...mapGetters(["allApartments", "takeStatus"]),
@@ -39,22 +47,22 @@ export default {
         default: {
           columns: 1,
           rows: 1,
-          isExpanded: true
+          isExpanded: true,
         },
         // Override for large screens
         lg: {
           columns: this.$screens({ default: 1, laptop: 2 }),
           rows: 1,
-          isExpanded: false
-        }
+          isExpanded: false,
+        },
       });
     },
     selectDragAttribute() {
       return {
         popover: {
           visibility: "hover",
-          isInteractive: false // Defaults to true when using slot
-        }
+          isInteractive: false, // Defaults to true when using slot
+        },
       };
     },
     selectAttribute() {
@@ -62,7 +70,7 @@ export default {
         highlight: {
           backgroundColor: "#6aae46",
           animated: false,
-          height: "2.9rem"
+          height: "2.9rem",
         },
         highlightCaps: {
           animated: false,
@@ -71,20 +79,20 @@ export default {
           backgroundColor: "#fff",
           borderColor: "#6aae46",
           borderStyle: "solid",
-          opacity: 0.5
-        }
+          opacity: 0.5,
+        },
       };
     },
     inputState() {
       if (!this.selectedValue) {
         return {
           type: "is-danger",
-          message: "Date required."
+          message: "Date required.",
         };
       }
       return {
         type: "is-primary",
-        message: ""
+        message: "",
       };
     },
     loader() {
@@ -98,23 +106,23 @@ export default {
       ) {
         this.isLoading = false;
       }
-    }
+    },
   },
   // this.$moment(this.range.start).format("DD-MM-YYYY")
   methods: {
-    ...mapActions(["login", "getAvailible", "getReservationToken"])
+    ...mapActions(["login", "getAvailible", "getReservationToken"]),
   },
   async mounted() {
     let params = {
       email: "admin@admin.com",
-      password: "password"
+      password: "password",
     };
     await this.login(params);
     await this.getReservationToken();
-  }
+  },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .notification {
   background-color: transparent;
   min-height: 120px;
@@ -149,6 +157,10 @@ export default {
   }
   .apart__list-item {
     width: 50%;
+    overflow: hidden;
+  }
+  .media-content {
+    width: 100%;
   }
 }
 @media (max-width: 767px) {
@@ -160,6 +172,11 @@ export default {
   .home {
     padding-left: 40px;
     padding-right: 40px;
+  }
+}
+@media screen and (max-width: 490px) {
+  .notification {
+    padding: 0;
   }
 }
 </style>

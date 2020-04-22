@@ -20,15 +20,23 @@ export default {
   components: {
     CarouselCart,
     AgreementCart,
-    DescriptionCart
-  }
+    DescriptionCart,
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .description--wrapper {
   display: flex;
   justify-content: space-around;
   padding: 90px 0px;
+}
+@media (max-width: 1055px) {
+  .form-wrapper {
+    padding: 8px 8px 12px;
+  }
+  .description--wrapper {
+    padding-top: 30px;
+  }
 }
 </style>

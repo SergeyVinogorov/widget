@@ -32,50 +32,50 @@ export default {
         {
           title: "Slide 1",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 4.4
+          rating: 4.4,
         },
         {
           title: "Slide 2",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 3.5
+          rating: 3.5,
         },
         {
           title: "Slide 3",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 5
+          rating: 5,
         },
         {
           title: "Slide 4",
-          image: "https://buefy.org/static/img/placeholder-1280x960.png"
+          image: "https://buefy.org/static/img/placeholder-1280x960.png",
         },
         {
           title: "Slide 5",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 5
+          rating: 5,
         },
         {
           title: "Slide 6",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 4
+          rating: 4,
         },
         {
           title: "Slide 7",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 2.7
+          rating: 2.7,
         },
         {
           title: "Slide 8",
           image: "https://buefy.org/static/img/placeholder-1280x960.png",
-          rating: 1.5
-        }
-      ]
+          rating: 1.5,
+        },
+      ],
     };
   },
   methods: {
     info(value) {
       this.test = value;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -85,6 +85,8 @@ $carousel-arrow-color: black;
 }
 .carousel-arrow .icon.has-icons-left {
   box-shadow: none;
+}
+@media (max-width: 1055px) {
 }
 // $carousel-indicator-border: white;
 </style>

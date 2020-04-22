@@ -5,10 +5,11 @@
         <div class="item flex-container">
           <img class="image" src="@/assets/apart-photo.png" />
           <div class="text-block">
-            <h2 class="text-block-header">{{apart.name}}</h2>
-            <p
-              class="after-header-description"
-            >Москва | {{apart.rooms}} {{flatText}} | {{ apart.guests }} {{guestsText}}</p>
+            <h2 class="text-block-header">{{ apart.name }}</h2>
+            <p class="after-header-description">
+              Москва | {{ apart.rooms }} {{ flatText }} | {{ apart.guests }}
+              {{ guestsText }}
+            </p>
             <div class="flex-container">
               <p class="price">
                 ₽ {{ apart.price }}| сутки
@@ -26,7 +27,7 @@
     </transition>
   </div>
 </template>
-    
+
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ApartCart from "./ApartCart";
@@ -34,19 +35,19 @@ import ApartCart from "./ApartCart";
 export default {
   name: "ApartmentItem",
   components: {
-    ApartCart
+    ApartCart,
   },
   props: {
     apart: {
       type: Object,
       required: true,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       today: new Date(),
-      isActive: false
+      isActive: false,
     };
   },
 
@@ -67,15 +68,15 @@ export default {
         if (this.apart.guests > 1) guestsText = " гостя";
       }
       return guestsText;
-    }
+    },
   },
   methods: {
     ...mapActions(["getAvailible", "getApart"]),
     checkApart() {
       this.getApart(this.apart.id);
       this.isActive = true;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -189,6 +190,9 @@ export default {
   opacity: 0;
 }
 @media (max-width: 1055px) {
+  .apartment--wrapper {
+    width: 100%;
+  }
   .flex-container {
     flex-direction: column;
     max-height: initial;
