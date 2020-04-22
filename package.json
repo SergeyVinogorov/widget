@@ -21,10 +21,10 @@
     "promise.prototype.finally": "^3.1.2",
     "serve-static": "^1.14.1",
     "v-calendar": "^1.0.4",
-    "vee-validate": "^3.2.5",
     "vue": "^2.6.10",
     "vue-custom-element": "^3.2.14",
     "vue-router": "^3.0.3",
+    "vuelidate": "^0.7.5",
     "vuex": "^3.0.1",
     "webpack": "^4.42.1"
   },

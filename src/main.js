@@ -5,6 +5,9 @@ import store from "./store/index";
 import moment from "moment";
 import Buefy from "buefy";
 import VCalendar from "v-calendar";
+import Vuelidate from "vuelidate";
+
+Vue.use(Vuelidate);
 
 // Use v-calendar & v-date-picker components
 Vue.use(VCalendar, {
