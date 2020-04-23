@@ -1,6 +1,9 @@
 <template>
   <div class="container-cart">
-    <span class="mdi mdi-chevron-up apartment__close"></span>
+    <span
+      class="mdi mdi-chevron-up apartment__close"
+      @click="this.close"
+    ></span>
     <div class="form-wrapper">
       <CarouselCart />
       <div class="description--wrapper">
@@ -8,7 +11,7 @@
         <DescriptionCart />
       </div>
     </div>
-    <span class="mdi mdi-chevron-up apartment__open"></span>
+    <span class="mdi mdi-chevron-up apartment__open" @click="this.close"></span>
   </div>
 </template>
 
@@ -23,6 +26,11 @@ export default {
     CarouselCart,
     AgreementCart,
     DescriptionCart,
+  },
+  methods: {
+    close() {
+      this.$emit("remove-apart");
+    },
   },
 };
 </script>

@@ -17,7 +17,7 @@ export default {
       state.apart.push(apart);
     },
     REMOVE_APART(state, apartRemove) {
-      state.apart = state.apart.filter((apart) => apart.id !== apartRemove.id);
+      state.apart = state.apart.filter((apart) => apart.id !== apartRemove);
     },
     TOGGLE_SHOW(state) {
       state.isActiveShow = !state.isActiveShow;

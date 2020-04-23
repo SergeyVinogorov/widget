@@ -7,12 +7,17 @@
       <p class="address">Москва, Ходынский бульвар, дом 2</p>
 
       <div class="dates">
-        <v-date-picker :select-attribute="setattribute"
-        :columns="layout.columns" :rows="layout.rows"
-        :is-expanded="layout.isExpanded" mode="range" v-model="range"
-        locale="ru" :masks="{ title: 'MMM YYYY' }" show-caps :popover="{
-        placement: 'bottom', visibility: 'click' }" color: gray
-        class="detail__date-picker" />
+        <v-date-picker
+          :attributes="setattribute"
+          :columns="layout.columns"
+          :rows="layout.rows"
+          mode="range"
+          v-model="range"
+          locale="ru"
+          :masks="{ title: 'MMM YYYY' }"
+          :popover="{ placement: 'bottom', visibility: 'click' }"
+          class="detail__date-picker"
+        ></v-date-picker>
       </div>
 
       <div class="price__description">
@@ -75,19 +80,21 @@ export default {
         end: this.getDateOut,
       },
       start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
-      setattribute: {
-        highlight: {
-          backgroundColor: "red",
-          borderRadius: "0",
-          color: "black",
-          fillMode: "gray",
+      setattribute: [
+        {
+          highlight: {
+            backgroundColor: "red",
+            borderRadius: "0",
+            color: "black",
+            fillMode: "gray",
+          },
+          contentStyle: {
+            borderRadius: "0",
+            color: "#ffffff",
+            backgroundColor: "transparent",
+          },
         },
-        contentStyle: {
-          borderRadius: "0",
-          color: "#ffffff",
-          backgroundColor: "transparent",
-        },
-      },
+      ],
       activeForm: false,
     };
   },
@@ -99,7 +106,7 @@ export default {
         default: {
           columns: 1,
           rows: 1,
-          isExpanded: true,
+          // isExpanded: true,
         },
         // Override for large screens
         lg: {

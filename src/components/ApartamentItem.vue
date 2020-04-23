@@ -1,7 +1,7 @@
 <template>
-  <div class="apartment--wrapper" @click="this.checkApart">
+  <div class="apartment--wrapper">
     <transition name="slide-fade" mode="out-in">
-      <section v-if="!isActive" class="apartment">
+      <section v-if="!isActive" class="apartment" @click="this.checkApart">
         <div class="item flex-container">
           <img class="image" src="@/assets/apart-photo.png" />
           <div class="text-block">
@@ -24,7 +24,7 @@
         </div>
         <span class="mdi mdi-chevron-down apartment__open"></span>.
       </section>
-      <ApartCart v-if="isActive" />
+      <ApartCart v-if="isActive" @remove-apart="this.changeActive" />
     </transition>
   </div>
 </template>
@@ -72,10 +72,14 @@ export default {
   },
   methods: {
     ...mapActions(["getAvailible", "getApart"]),
-
+    ...mapMutations(["REMOVE_APART"]),
     checkApart() {
       this.getApart(this.apart.id);
-      this.isActive = !this.isActive;
+      this.isActive = true;
+    },
+    changeActive() {
+      this.isActive = false;
+      this.$store.commit("REMOVE_APART", this.apart.id);
     },
   },
 };
