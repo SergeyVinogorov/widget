@@ -96,29 +96,32 @@ export default {
       };
     },
     loader() {
-      if (this.takeStatus == "loading") {
-        return true;
-      }
+      let computedStatus = this.takeStatus;
+      let result = false;
       if (
-        this.takeStatus == "success" ||
-        this.takeStatus == "error" ||
-        this.takeStatus == ""
+        computedStatus === "success" ||
+        computedStatus === "error" ||
+        computedStatus === ""
       ) {
-        this.isLoading = false;
+        result = false;
       }
+      if (computedStatus == "loading") {
+        result = true;
+      }
+      return result;
     },
   },
-  // this.$moment(this.range.start).format("DD-MM-YYYY")
+
   methods: {
     ...mapActions(["login", "getAvailible", "getReservationToken"]),
   },
-  async mounted() {
+  mounted() {
     let params = {
       email: "admin@admin.com",
       password: "password",
     };
-    await this.login(params);
-    await this.getReservationToken();
+    this.login(params);
+    // this.getReservationToken();
   },
 };
 </script>

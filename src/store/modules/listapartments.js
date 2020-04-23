@@ -10,10 +10,9 @@ export default {
     },
   },
   actions: {
-    async getAvailible({ commit, rootState }, filter) {
+    async getAvailible({ commit, rootState, dispatch }, filter) {
       let date_from = filter ? filter.start : rootState.picker.dateIn;
       let date_to = filter ? filter.end : rootState.picker.dateOut;
-
       const params = {
         date_from: moment(date_from).format("YYYY-MM-DD hh:mm:ss"),
         date_to: moment(date_to).format("YYYY-MM-DD hh:mm:ss"),
@@ -38,14 +37,38 @@ export default {
       // })
       apiClinet
         .get("/api/v1/apartments/get-available", { params })
-        .then((resp) => {
+        .then(async (resp) => {
+          commit("MODULE_REQUEST", {
+            root: true,
+          });
           if (Array.isArray(resp.data.data) && resp.data.success) {
             const apart = resp.data.data;
-            commit("INSERT_APARTMENTS", apart);
+            await commit("INSERT_APARTMENTS", apart);
+            commit("LOAD_SUCCESS", {
+              root: true,
+            });
+          } else {
+            commit("MODULE_ERROR", {
+              root: true,
+            });
+            const notification = {
+              type: "error",
+              message:
+                "При получении списка апартаментов возникла следующая ошибка: " +
+                resp.data.message,
+            };
+            dispatch("add", notification, { root: true });
           }
         })
         .catch((error) => {
-          console.log(error);
+          commit("MODULE_ERROR", {
+            root: true,
+          });
+          const notification = {
+            type: "error",
+            message: "Что то пошло не так: " + error.message,
+          };
+          dispatch("add", notification, { root: true });
         });
     },
   },

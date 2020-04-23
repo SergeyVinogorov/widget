@@ -31,7 +31,7 @@ export default {
   },
 
   actions: {
-    async getReservationToken({ commit }) {
+    async getReservationToken({ commit, dispatch }) {
       commit("MODULE_REQUEST");
       let bodyFormData = new FormData();
       await axios({
@@ -47,16 +47,16 @@ export default {
               "Authorization"
             ] = `Bearer ${tokenModule}`;
             commit("MODULE_SUCCESS", tokenModule);
-            const notification = {
-              type: "success",
-              message: "Reservation token get success!",
-            };
-            dispatch("add", notification, { root: true });
           } else {
             commit("MODULE_ERROR");
+            const notification = {
+              type: "error",
+              message: "Что то пошло не так: " + resp.data.message,
+            };
+            dispatch("add", notification, { root: true });
           }
         })
-        .catch((err) => {
+        .catch((error) => {
           commit("MODULE_ERROR");
           const notification = {
             type: "error",
@@ -65,7 +65,6 @@ export default {
           };
           dispatch("add", notification, { root: true });
           localStorage.removeItem("tokenModule");
-          console.log(err);
         });
     },
     async getApart({ commit, dispatch }, paramsId) {
@@ -80,14 +79,23 @@ export default {
         .then(async (resp) => {
           if (typeof resp.data == "object" && resp.data.success) {
             const apart = resp.data.data;
-
             await commit("INSERT_APART", apart);
             await commit("LOAD_SUCCESS");
+          } else {
+            const notification = {
+              type: "error",
+              message: "Что то пошло не так: " + resp.data.message,
+            };
+            dispatch("add", notification, { root: true });
           }
         })
         .catch((error) => {
           commit("MODULE_ERROR");
-          console.log(error);
+          const notification = {
+            type: "error",
+            message: "Что то пошло не так: " + error.message,
+          };
+          dispatch("add", notification, { root: true });
         });
     },
   },

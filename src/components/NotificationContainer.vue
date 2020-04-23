@@ -1,7 +1,7 @@
 <template>
   <div class="notification-container">
-    <Notification
-      v-for="notification in notifications"
+    <NotificationBar
+      v-for="notification in takeNotifications"
       :key="notification.id"
       :notification="notification"
     />
@@ -9,21 +9,32 @@
 </template>
 
 <script>
-import Notification from "./Notification";
+import NotificationBar from "./NotificationBar";
 import { mapState } from "vuex";
 export default {
   components: {
-    Notification,
+    NotificationBar,
   },
-  computed: mapState("notification", ["notifications"]),
+  computed: {
+    takeNotifications() {
+      return this.$store.state.notification.notifications;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .notification-container {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  padding-right: 40px;
+  left: 50%;
+  margin-left: -100px;
+  bottom: 20%;
+
+  background-color: #ffffff;
+
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
 }
 </style>

@@ -37,11 +37,16 @@ export default {
             commit("AUTH_SUCCESS", token);
             const notification = {
               type: "success",
-              message: "Your are logged in!",
+              message: "Вы зарегистрированы!",
             };
             dispatch("add", notification, { root: true });
           } else {
             commit("AUTH_ERROR");
+            const notification = {
+              type: "error",
+              message: "Что то пошло не так: " + resp.data.message,
+            };
+            dispatch("add", notification, { root: true });
           }
         })
         .catch((error) => {
@@ -49,10 +54,11 @@ export default {
           localStorage.removeItem("token");
           const notification = {
             type: "error",
-            message: "There was a problem fetching events: " + error.message,
+            message:
+              "При получении данных возникла следующая проблема: " +
+              error.message,
           };
           dispatch("add", notification, { root: true });
-          console.log(err);
         });
     },
   },

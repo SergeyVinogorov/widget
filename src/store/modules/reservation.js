@@ -37,17 +37,23 @@ export default {
             commit("AUTH_SUCCESS", token);
           } else {
             commit("AUTH_ERROR");
+            const notification = {
+              type: "error",
+              message: "Что то пошло не так: " + resp.data.message,
+            };
+            dispatch("add", notification, { root: true });
           }
         })
-        .catch((err) => {
+        .catch((error) => {
           const notification = {
             type: "error",
-            message: "There was a problem fetching events: " + error.message,
+            message:
+              "При получении данных с сервера возникла следующая ошибка: " +
+              error.message,
           };
           dispatch("add", notification, { root: true });
           commit("AUTH_ERROR");
           localStorage.removeItem("token");
-          console.log(err);
         });
     },
   },

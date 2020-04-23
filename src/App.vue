@@ -1,9 +1,17 @@
 <template>
   <div id="app">
+    <NotificationContainer />
     <router-view />
   </div>
 </template>
-
+<script>
+import NotificationContainer from "@/components/NotificationContainer.vue";
+export default {
+  components: {
+    NotificationContainer,
+  },
+};
+</script>
 <style lang="scss">
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
@@ -18,44 +26,44 @@ $twitter-invert: findColorInvert($twitter);
 $colors: (
   "white": (
     $white,
-    $black
+    $black,
   ),
   "black": (
     $black,
-    $white
+    $white,
   ),
   "light": (
     $light,
-    $light-invert
+    $light-invert,
   ),
   "dark": (
     $dark,
-    $dark-invert
+    $dark-invert,
   ),
   "primary": (
     $primary,
-    $primary-invert
+    $primary-invert,
   ),
   "info": (
     $info,
-    $info-invert
+    $info-invert,
   ),
   "success": (
     $success,
-    $success-invert
+    $success-invert,
   ),
   "warning": (
     $warning,
-    $warning-invert
+    $warning-invert,
   ),
   "danger": (
     $danger,
-    $danger-invert
+    $danger-invert,
   ),
   "twitter": (
     $twitter,
-    $twitter-invert
-  )
+    $twitter-invert,
+  ),
 );
 
 // Links
@@ -83,6 +91,13 @@ $link-focus-border: $primary;
 }
 
 #nav a.router-link-exact-active {
+  color: #42b983;
+}
+
+.-text-error {
+  color: #f57f6c;
+}
+.-text-success {
   color: #42b983;
 }
 </style>
