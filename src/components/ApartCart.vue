@@ -1,5 +1,6 @@
 <template>
   <div class="container-cart">
+    <span class="mdi mdi-chevron-up apartment__close"></span>
     <div class="form-wrapper">
       <CarouselCart />
       <div class="description--wrapper">
@@ -7,6 +8,7 @@
         <DescriptionCart />
       </div>
     </div>
+    <span class="mdi mdi-chevron-up apartment__open"></span>
   </div>
 </template>
 
@@ -30,6 +32,9 @@ export default {
   display: flex;
   justify-content: space-around;
   padding: 90px 0px;
+}
+.container-cart {
+  padding-top: 50px;
 }
 @media (max-width: 1055px) {
   .form-wrapper {

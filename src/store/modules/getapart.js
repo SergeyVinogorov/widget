@@ -7,13 +7,20 @@ const apiClinet = axios.create({
 });
 export default {
   state: {
-    apart: {},
+    apart: [],
     statusModule: "",
+    isActiveShow: false,
     tokenModule: localStorage.getItem("tokenModule") || "",
   },
   mutations: {
     INSERT_APART(state, apart) {
-      state.apart = apart;
+      state.apart.push(apart);
+    },
+    REMOVE_APART(state, apartRemove) {
+      state.apart = state.apart.filter((apart) => apart.id !== apartRemove.id);
+    },
+    TOGGLE_SHOW(state) {
+      state.isActiveShow = !state.isActiveShow;
     },
     MODULE_REQUEST(state) {
       state.statusModule = "loading";
@@ -105,6 +112,9 @@ export default {
     },
     takeStatus(state) {
       return state.statusModule;
+    },
+    takeShow(state) {
+      return state.isActiveShow;
     },
   },
 };

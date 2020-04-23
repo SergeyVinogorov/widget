@@ -1,7 +1,7 @@
 <template>
-  <div class="apartment--wrapper">
+  <div class="apartment--wrapper" @click="this.checkApart">
     <transition name="slide-fade" mode="out-in">
-      <section v-if="!isActive" class="apartment" @click="this.checkApart">
+      <section v-if="!isActive" class="apartment">
         <div class="item flex-container">
           <img class="image" src="@/assets/apart-photo.png" />
           <div class="text-block">
@@ -22,6 +22,7 @@
             <img class="hover-arrow" src="@/assets/hover-right-arrow.png" />
           </div>
         </div>
+        <span class="mdi mdi-chevron-down apartment__open"></span>.
       </section>
       <ApartCart v-if="isActive" />
     </transition>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import ApartCart from "./ApartCart";
 
 export default {
@@ -50,9 +51,8 @@ export default {
       isActive: false,
     };
   },
-
   computed: {
-    ...mapGetters(["allApartments"]),
+    ...mapGetters(["allApartments", "takeShow"]),
     flatText() {
       let flatText = " комнат";
       if (this.apart.rooms >= 1 && this.apart.rooms < 5) {
@@ -72,14 +72,32 @@ export default {
   },
   methods: {
     ...mapActions(["getAvailible", "getApart"]),
+
     checkApart() {
       this.getApart(this.apart.id);
-      this.isActive = true;
+      this.isActive = !this.isActive;
     },
   },
 };
 </script>
 <style lang="scss">
+.apartment--wrapper {
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
+  margin-bottom: 20px;
+  position: relative;
+  &:hover {
+    .apartment__open {
+      animation-name: shakeOpen;
+      animation-duration: 0.6s;
+      animation-timing-function: ease-in-out;
+    }
+    .apartment__close {
+      animation-name: shakeOpen;
+      animation-duration: 0.6s;
+      animation-timing-function: ease-in-out;
+    }
+  }
+}
 .apartment {
   min-width: 285px;
   height: 100%;
@@ -96,6 +114,20 @@ export default {
 .apartment_header {
   margin-bottom: 20px;
 }
+.apartment__open {
+  bottom: 0;
+  font-size: 25px;
+  left: 50%;
+  position: absolute;
+  margin-bottom: 10px;
+}
+.apartment__close {
+  top: 0;
+  font-size: 25px;
+  left: 50%;
+  position: absolute;
+  margin-bottom: 10px;
+}
 .price {
   margin-right: 8px;
 }
@@ -108,16 +140,6 @@ export default {
   max-height: 547px;
   border: 2px solid transparent;
   cursor: pointer;
-  &:hover {
-    border: 2px solid #747474;
-    .hover-arrow {
-      display: block;
-      margin-right: 18px;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
 }
 
 .flex-container {
@@ -178,15 +200,15 @@ export default {
 }
 /**Transitions */
 .slide-fade-enter {
-  transform: translateX(10px);
+  transform: translateY(10px);
   opacity: 0;
 }
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.2s ease;
+  transition: all 1s ease;
 }
 .slide-fade-leave-to {
-  transform: translateX(-10px);
+  transform: translateY(-10px);
   opacity: 0;
 }
 @media (max-width: 1055px) {
@@ -201,12 +223,6 @@ export default {
     height: auto;
     border: 2px solid transparent;
     cursor: pointer;
-    &:hover {
-      border: 2px solid transparent;
-      .hover-arrow {
-        display: none;
-      }
-    }
   }
   .price {
     text-align: left;
@@ -215,6 +231,17 @@ export default {
 @media (max-width: 768px) {
   .text-block {
     padding: 20px;
+  }
+}
+@keyframes shakeOpen {
+  10%,
+  90% {
+    transform: translateY(-5px);
+  }
+
+  20%,
+  80% {
+    transform: translateY(5px);
   }
 }
 </style>

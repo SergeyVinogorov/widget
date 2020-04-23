@@ -27,12 +27,12 @@ export default {
       timeout: null,
     };
   },
-  // mounted() {
-  //   this.timeout = setTimeout(() => this.remove(this.notification), 3000);
-  // },
-  // beforeDestroy() {
-  //   clearTimeout(this.timeout);
-  // },
+  mounted() {
+    this.timeout = setTimeout(() => this.remove(this.notification), 3000);
+  },
+  beforeDestroy() {
+    clearTimeout(this.timeout);
+  },
   computed: {
     notificationTypeClass() {
       let typeNotification = "is-success";
