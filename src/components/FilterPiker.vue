@@ -62,14 +62,15 @@
       </div>
       <BaseButton type="button" class="reservation-button" @click="check()">Найти апартаменты</BaseButton>
     </div>
+    <TRVLPicker :checkin.sync="range.start" :checkout.sync="range.end" class="main-datepicker" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import BaseButton from "./BaseButton";
-// import TRVLPicker from "@trvl/picker";
-// <TRVLPicker :checkin.sync="range.start" :checkout.sync="range.end" class="main-datepicker" />
+import TRVLPicker from "@trvl/picker";
+
 export default {
   name: "Filter-picker",
   data() {
@@ -106,8 +107,8 @@ export default {
     };
   },
   components: {
-    BaseButton
-    // TRVLPicker
+    BaseButton,
+    TRVLPicker
   },
   computed: {
     ...mapGetters(["getGuests", "getDateIn", "getDateOut", "getMinDate"]),
