@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="reservation_form" v-if="!activeForm">
-      <h2 class="reserve_form_heading">
-        Апартаменты | 2 комнаты | 2 кровати kingsize
-      </h2>
+      <h2 class="reserve_form_heading">Апартаменты | 2 комнаты | 2 кровати kingsize</h2>
       <p class="address">Москва, Ходынский бульвар, дом 2</p>
 
       <div class="dates">
@@ -51,9 +49,7 @@
         </div>
       </div>
 
-      <BaseButton class="reservation_form_button" @click="this.triggerForm"
-        >Забронировать</BaseButton
-      >
+      <BaseButton class="reservation_form_button" @click="this.triggerForm">Забронировать</BaseButton>
     </div>
     <transition name="fade" mode="out-in">
       <ReservationForm v-if="activeForm" />
@@ -71,13 +67,13 @@ export default {
   name: "AgreementCart",
   components: {
     BaseButton,
-    ReservationForm,
+    ReservationForm
   },
   data() {
     return {
       range: {
         start: this.getDateIn,
-        end: this.getDateOut,
+        end: this.getDateOut
       },
       start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
       setattribute: [
@@ -86,16 +82,16 @@ export default {
             backgroundColor: "red",
             borderRadius: "0",
             color: "black",
-            fillMode: "gray",
+            fillMode: "gray"
           },
           contentStyle: {
             borderRadius: "0",
             color: "#ffffff",
-            backgroundColor: "transparent",
-          },
-        },
+            backgroundColor: "transparent"
+          }
+        }
       ],
-      activeForm: false,
+      activeForm: false
     };
   },
   computed: {
@@ -105,23 +101,23 @@ export default {
         // Default layout for mobile
         default: {
           columns: 1,
-          rows: 1,
+          rows: 1
           // isExpanded: true,
         },
         // Override for large screens
         lg: {
           columns: this.$screens({ default: 1, laptop: 2 }),
           rows: 1,
-          isExpanded: false,
-        },
+          isExpanded: false
+        }
       });
-    },
+    }
   },
   methods: {
     triggerForm() {
       this.activeForm = !this.activeForm;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -236,6 +232,11 @@ export default {
 @media (max-width: 1055px) {
   .reservation_form {
     margin-right: 0px;
+  }
+}
+@media (max-width: 430px) {
+  .reservation_form {
+    padding: 30px 20px;
   }
 }
 </style>

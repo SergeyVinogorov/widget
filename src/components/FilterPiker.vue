@@ -349,6 +349,7 @@ export default {
   }
   .reservation-button {
     margin: 16px 0px;
+    width: 100% !important;
   }
   .datepicker--wrapper {
     flex-direction: column;
