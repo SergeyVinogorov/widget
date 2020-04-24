@@ -14,9 +14,7 @@
         @blur="$v.name.$touch()"
       />
       <template v-if="$v.name.$error">
-        <p v-if="!$v.name.required" class="errorMessage">
-          Поле обязательно для заполнения
-        </p>
+        <p v-if="!$v.name.required" class="errorMessage">Поле обязательно для заполнения</p>
       </template>
 
       <BaseInput
@@ -29,12 +27,8 @@
         @blur="$v.email.$touch()"
       />
       <template v-if="$v.email.$error">
-        <p v-if="!$v.email.email" class="errorMessage">
-          Введите корректный email
-        </p>
-        <p v-if="!$v.email.required" class="errorMessage">
-          Поле обязательно для заполнения
-        </p>
+        <p v-if="!$v.email.email" class="errorMessage">Введите корректный email</p>
+        <p v-if="!$v.email.required" class="errorMessage">Поле обязательно для заполнения</p>
       </template>
       <BaseInput
         label="Введите телефон"
@@ -49,24 +43,13 @@
         @blur="$v.phone.$touch()"
       />
       <template v-if="$v.phone.$error">
-        <p v-if="!$v.phone.alpha" class="errorMessage">
-          Введите корректный номер телефона
-        </p>
-        <p v-if="!$v.phone.required" class="errorMessage">
-          Поле обязательно для заполнения
-        </p>
+        <p v-if="!$v.phone.alpha" class="errorMessage">Введите корректный номер телефона</p>
+        <p v-if="!$v.phone.required" class="errorMessage">Поле обязательно для заполнения</p>
       </template>
 
       <div class="control">
-        <BaseButton
-          type="submit"
-          :disabled="$v.$anyError"
-          buttonClass="form__button"
-          >Забронировать</BaseButton
-        >
-        <p v-if="$v.$anyError" class="errorMessage">
-          Пожалуйста заполните обязательные поля
-        </p>
+        <BaseButton type="submit" :disabled="$v.$anyError" buttonClass="form__button">Забронировать</BaseButton>
+        <p v-if="$v.$anyError" class="errorMessage">Пожалуйста заполните обязательные поля</p>
       </div>
     </form>
   </div>
@@ -87,31 +70,31 @@ export default {
   mixins: [formMixin],
   props: {
     post: {
-      type: Object,
+      type: Object
     },
     apartId: {
-      type: Number,
+      type: Number
     },
     title: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
       name: "",
       email: "",
       phone: "",
-      labelPosition: "on board",
+      labelPosition: "on board"
     };
   },
   validations: {
     name: { required },
     email: { required, email },
-    phone: { required, alpha },
+    phone: { required, alpha }
   },
   components: {
     BaseButton,
-    BaseInput,
+    BaseInput
   },
   // computed: {
   //   ...mapGetters(["getUsrId", "getSuccess", "getCurrentPage"]),
@@ -127,7 +110,7 @@ export default {
         phone: this.phone,
         createdAt: Date(),
         updateAt: Date(),
-        userId: this.userId,
+        userId: this.userId
       });
       this.name = this.email = this.phone = "";
     },
@@ -137,14 +120,14 @@ export default {
       } else {
         return "Проверьте введенные данные";
       }
-    },
+    }
   },
   mounted() {
     this.success = this.getSuccess;
   },
   created() {
     this.userId = this.getUsrId;
-  },
+  }
 };
 </script>
 <style lang="scss">
@@ -216,6 +199,11 @@ export default {
   40%,
   60% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+@media screen and (max-width: 500px) {
+  .createForm {
+    min-width: auto;
   }
 }
 </style>
