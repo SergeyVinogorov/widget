@@ -36,19 +36,19 @@ import ApartCart from "./ApartCart";
 export default {
   name: "ApartmentItem",
   components: {
-    ApartCart,
+    ApartCart
   },
   props: {
     apart: {
       type: Object,
       required: true,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
       today: new Date(),
-      isActive: false,
+      isActive: false
     };
   },
   computed: {
@@ -68,7 +68,7 @@ export default {
         if (this.apart.guests > 1) guestsText = " гостя";
       }
       return guestsText;
-    },
+    }
   },
   methods: {
     ...mapActions(["getAvailible", "getApart"]),
@@ -80,8 +80,8 @@ export default {
     changeActive() {
       this.isActive = false;
       this.$store.commit("REMOVE_APART", this.apart.id);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss">
@@ -122,6 +122,7 @@ export default {
   bottom: 0;
   font-size: 25px;
   left: 50%;
+  margin-left: -12px;
   position: absolute;
   margin-bottom: 10px;
 }
@@ -129,6 +130,7 @@ export default {
   top: 0;
   font-size: 25px;
   left: 50%;
+  margin-left: -12px;
   position: absolute;
   margin-bottom: 10px;
 }

@@ -1,12 +1,7 @@
 <template>
   <div>
-    <label v-if="label" :class="classLabel">{{ label }}</label>
-    <input
-      :value="value"
-      @input="updateValue"
-      v-bind="$attrs"
-      v-on="listeners"
-    />
+    <label v-if="label" :class="classLabel">{{ label }}*</label>
+    <input :value="value" @input="updateValue" v-bind="$attrs" v-on="listeners" />
   </div>
 </template>
 
@@ -17,27 +12,27 @@ export default {
   props: {
     label: {
       type: String,
-      default: "",
+      default: ""
     },
     value: [String, Number],
 
     classLabel: {
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     listeners() {
       return {
         ...this.$listeners,
-        input: this.updateValue,
+        input: this.updateValue
       };
-    },
+    }
   },
   methods: {
     updateValue(event) {
       this.$emit("input", event.target.value);
-    },
-  },
+    }
+  }
 };
 </script>
 

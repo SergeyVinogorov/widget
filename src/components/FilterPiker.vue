@@ -12,15 +12,12 @@
       :popover="{ placement: 'bottom', visibility: 'click' }"
       color="gray"
       class="main-datepicker"
+      min-date="5"
     >
       <div class="datepicker--wrapper">
         <div class="datepicker__date-in">
           <div class="icon-wrapper">
-            <img
-              src="@/assets/Shapeapart.svg"
-              alt="Icon datepicker"
-              class="datepicker__icon"
-            />
+            <img src="@/assets/Shapeapart.svg" alt="Icon datepicker" class="datepicker__icon" />
             <div class="datepicker__input">{{ displayDateIn }}</div>
           </div>
           <span class="mdi mdi-chevron-down"></span>
@@ -35,11 +32,7 @@
     <div class="picker--right">
       <div class="add-guest">
         <div class="add-guest__descript">
-          <b-icon
-            icon="account-multiple"
-            size="is-small"
-            class="add-guest__descript--image"
-          />
+          <b-icon icon="account-multiple" size="is-small" class="add-guest__descript--image" />
           <span class="add-guest__descript--text">Гости</span>
         </div>
 
@@ -53,9 +46,7 @@
             "
             @click="this.DECREMENT"
             :disabled="getGuests === 0 ? true : false"
-          >
-            -
-          </button>
+          >-</button>
           <span class="add-guest__guest">{{ getGuests }}</span>
           <button
             type="button"
@@ -66,14 +57,10 @@
             "
             @click="this.INCREMENT"
             :disabled="getGuests === 17 ? true : false"
-          >
-            +
-          </button>
+          >+</button>
         </div>
       </div>
-      <BaseButton type="button" class="reservation-button" @click="check()"
-        >Найти апартаменты</BaseButton
-      >
+      <BaseButton type="button" class="reservation-button" @click="check()">Найти апартаменты</BaseButton>
     </div>
   </div>
 </template>
@@ -81,14 +68,15 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import BaseButton from "./BaseButton";
-
+// import TRVLPicker from "@trvl/picker";
+// <TRVLPicker :checkin.sync="range.start" :checkout.sync="range.end" class="main-datepicker" />
 export default {
   name: "Filter-picker",
   data() {
     return {
       range: {
         start: this.getDateIn,
-        end: this.getDateOut,
+        end: this.getDateOut
       },
       start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
       attributes: [
@@ -97,28 +85,29 @@ export default {
             backgroundColor: "#f57f6c", // Red
             borderColor: "#42b983",
             borderWidth: "2px",
-            borderStyle: "solid",
-          },
+            borderStyle: "solid"
+          }
         },
         {
           contentStyle: {
-            color: "white",
-          },
+            color: "white"
+          }
         },
         {
           dates: [
             // Use date ranges
             {
               start: new Date(2020, 4, 1),
-              end: new Date(2020, 4, 4),
-            },
-          ],
-        },
-      ],
+              end: new Date(2020, 4, 4)
+            }
+          ]
+        }
+      ]
     };
   },
   components: {
-    BaseButton,
+    BaseButton
+    // TRVLPicker
   },
   computed: {
     ...mapGetters(["getGuests", "getDateIn", "getDateOut", "getMinDate"]),
@@ -128,14 +117,14 @@ export default {
         default: {
           columns: 1,
           rows: 1,
-          isExpanded: true,
+          isExpanded: true
         },
         // Override for large screens
         lg: {
           columns: this.$screens({ default: 1, laptop: 2 }),
           rows: 1,
-          isExpanded: false,
-        },
+          isExpanded: false
+        }
       });
     },
 
@@ -155,8 +144,8 @@ export default {
       },
       set(value) {
         this.$store.commit("insertGuests", value);
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapMutations([
@@ -164,16 +153,16 @@ export default {
       "INSERT_DATE_OUT",
       "INSERT_GUESTS",
       "INCREMENT",
-      "DECREMENT",
+      "DECREMENT"
     ]),
     ...mapActions(["getAvailible"]),
     async check() {
       await this.getAvailible(this.range);
-    },
-  },
+    }
+  }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .picker {
   display: flex;
   align-items: center;
@@ -259,6 +248,16 @@ export default {
   cursor: pointer;
 }
 //date picker
+.main-datepicker {
+  .vc-popover-caret {
+    display: none;
+  }
+  .vc-popover-content {
+    border: 2px solid #747474;
+    border-radius: 0px;
+    padding: 23px 50px 30px;
+  }
+}
 .icon-wrapper {
   display: flex;
   align-self: center;

@@ -1,5 +1,10 @@
 <template>
-  <button class="reservation-button" :class="buttonClass" v-on="$listeners" v-bind="$attrs">
+  <button
+    class="reservation-button"
+    :class="buttonClass"
+    v-on="$listeners"
+    v-bind="$attrs"
+  >
     <slot>Найти</slot>
   </button>
 </template>
@@ -9,9 +14,9 @@ export default {
   inheritAttrs: false,
   props: {
     buttonClass: {
-      type: String
-    }
-  }
+      type: String,
+    },
+  },
 };
 </script>
 
