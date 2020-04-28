@@ -1,18 +1,12 @@
 <template>
   <div class="picker">
     <v-date-picker
-      :attributes="attributes"
-      :columns="layout.columns"
-      :rows="layout.rows"
-      :is-expanded="layout.isExpanded"
       mode="range"
       v-model="range"
-      locale="ru"
-      :masks="{ title: 'MMM YYYY' }"
+      :attributes="attributes"
+      :select-attribute="selectTrigger"
+      :drag-attribute="dragTrigger"
       :popover="{ placement: 'bottom', visibility: 'click' }"
-      color="gray"
-      class="main-datepicker"
-      min-date="5"
     >
       <div class="datepicker--wrapper">
         <div class="datepicker__date-in">
@@ -62,53 +56,105 @@
       </div>
       <BaseButton type="button" class="reservation-button" @click="check()">Найти апартаменты</BaseButton>
     </div>
-    <TRVLPicker :checkin.sync="range.start" :checkout.sync="range.end" class="main-datepicker" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import BaseButton from "./BaseButton";
-import TRVLPicker from "@trvl/picker";
 
+import "v-calendar/lib/v-calendar.min.css";
+import { getExampleMonthComps } from "../../node_modules/v-calendar/src/utils/helpers";
+/***
+   :theme-styles="themeStyles"
+      show-caps
+  masks="{ title: 'MMM YYYY' }"
+      :popover="{ placement: 'bottom', visibility: 'click' }"
+      class="main-datepicker"
+			:theme-styles="themeStyles"
+ */
 export default {
   name: "Filter-picker",
   data() {
+    const {
+      thisMonth,
+      thisMonthYear,
+      nextMonth,
+      nextMonthYear
+    } = getExampleMonthComps();
     return {
       range: {
         start: this.getDateIn,
         end: this.getDateOut
       },
-      start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
+      // selectAttribute: {
+      //   highlight: {
+      //     backgroundColor: "#E5E5E5" // Red
+      //   },
+      //   contentStyle: {
+      //     color: "#000000"
+      //   }
+      // },
       attributes: [
         {
           highlight: {
-            backgroundColor: "#f57f6c", // Red
-            borderColor: "#42b983",
-            borderWidth: "2px",
-            borderStyle: "solid"
-          }
-        },
-        {
+            backgroundColor: "#000"
+          },
           contentStyle: {
             color: "white"
-          }
-        },
-        {
-          dates: [
-            // Use date ranges
-            {
-              start: new Date(2020, 4, 1),
-              end: new Date(2020, 4, 4)
-            }
-          ]
+          },
+          dates: []
         }
-      ]
+      ],
+      start: this.$moment(this.getDateIn).format("DD-MM-YYYY"),
+      themeStyles: {
+        wrapper: {
+          border: "2px solid #747474",
+          padding: "33px 68px"
+        },
+        header: {
+          // color: "#000",
+          fontWeight: "bold",
+          fontSize: "16px",
+          backgroundColor: "#fff"
+          // border: "2px solid #747474",
+          // borderBottom: "none",
+        },
+        headerVerticalDivider: {
+          borderLeft: "1px solid #404c59"
+        },
+
+        weekdays: {
+          color: "#1d1c1c",
+          backgroundColor: "#fff"
+          // borderLeft: "2px solid #747474",
+          // borderRight: "2px solid #747474"
+        },
+        weekdaysVerticalDivider: {
+          borderLeft: "1px solid #404c59"
+        },
+        weeks: {
+          // border: "2px solid #000"
+        }
+        // dayCell: {
+        //   backgroundColor: "#000"
+        // },
+        // dayContent: {
+        //   backgroundColor: "#fff",
+        //   border: "1px solid #dadada"
+        // },
+
+        // dayCell: {
+        //   backgroundColor: "#fff"
+        // }
+        // highlightCaps: {
+        //   backgroundColor: "#000"
+        // }
+      }
     };
   },
   components: {
-    BaseButton,
-    TRVLPicker
+    BaseButton
   },
   computed: {
     ...mapGetters(["getGuests", "getDateIn", "getDateOut", "getMinDate"]),
@@ -128,7 +174,38 @@ export default {
         }
       });
     },
-
+    dragTrigger() {
+      let sample = {
+        highlight: {
+          backgroundColor: "#E5E5E5" // Red
+        },
+        contentStyle: {
+          color: "#000000"
+        }
+      };
+      return {
+        highlight: {
+          backgroundColor: "#E5E5E5" // Red
+        },
+        contentStyle: {
+          color: "#000000"
+        }
+      };
+    },
+    selectTrigger() {
+      let sample = {
+        highlight: {
+          backgroundColor: "#E5E5E5" // Red
+        },
+        contentStyle: {
+          color: "#000000"
+        }
+      };
+      if (this.range.start == undefined) {
+        sample.highlight.backgroundColor = "transparent";
+      }
+      return sample;
+    },
     displayDateIn() {
       return this.start == this.$moment(this.range.start).format("DD-MM-YYYY")
         ? "Заезд"
@@ -159,6 +236,12 @@ export default {
     ...mapActions(["getAvailible"]),
     async check() {
       await this.getAvailible(this.range);
+    }
+  },
+  watch: {
+    range: function() {
+      this.attributes[0].dates.push(this.range.start);
+      this.attributes[0].dates.push(this.range.end);
     }
   }
 };

@@ -6,6 +6,7 @@ import moment from "moment";
 import Buefy from "buefy";
 import VCalendar from "v-calendar";
 import Vuelidate from "vuelidate";
+// import "v-calendar/lib/v-calendar.min.css";
 
 Vue.use(Vuelidate);
 
@@ -17,6 +18,7 @@ Vue.use(VCalendar, {
     laptop: "992px",
     desktop: "1200px",
   },
+  locale: "ru",
 });
 
 // import vueCustomElement from "vue-custom-element";
